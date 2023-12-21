@@ -1,8 +1,19 @@
 from Models.Conta import Conta, NConta
 from Models.Cliente import Cliente, NCliente
+from Models.Banco import Banco, NBanco
 import datetime
 
 class view:
+    def Banco_Listar():
+        return NBanco.listar()
+    def Banco_Listar_Id():
+        return NBanco.get_banco(id)
+    def Banco_Inserir(nome, endereço):
+        return NBanco.inserir(0, nome, endereço)
+    def Banco_Atualizar(id, nome, endereço):
+        return NBanco.atualizar(id, nome, endereço)
+    def Banco_Excluir(id):
+        return NBanco.excluir(id," "," ")
     def Cliente_Listar():
         return NCliente.Listar()
     def Cliente_Listar_Id(id):
@@ -34,7 +45,34 @@ class view:
         NConta.Atualizar(Conta(id, id_Cliente, Data_De_Abertura, Numero_Do_Banco, Saldo))
     def Conta_Excluir(id):
         NConta.Excluir(Conta(id, 0, " ", " ", " "))
+    def listar_contas_do_cliente(clienteI):
+        Contas_Do_Cliente = []
+        for Conta in view.Conta_Listar():
+            if Conta.get_id_Cliente() == clienteI:
+                Contas_Do_Cliente.append(Conta)
+        return Contas_Do_Cliente
+    def depositar(Depositar):
+        for conta in view.listar_contas_do_cliente():
+            NConta.atualizar(Conta(conta.get_id(), conta.get_id_Cliente(), conta.get_Data_De_Abertura(), conta.Get_Numero_Do_Banco(), conta.get_saldo + Depositar))
+    def sacar(Sacar):
+        for conta in view.listar_contas_do_cliente():
+            NConta.atualizar(Conta(conta.get_id(), conta.get_id_Cliente(), conta.get_Data_De_Abertura(), conta.Get_Numero_Do_Banco(), conta.get_saldo - Sacar))
+    def transferir(id, Numero_Do_Banco, Transferencia):
+        for conta in view.listar_contas_do_cliente():
+            NConta.atualizar(Conta(conta.get_id(), conta.get_id_Cliente(), conta.get_Data_De_Abertura(), conta.Get_Numero_Do_Banco(), conta.get_saldo - Transferencia))
+        for contal in view.Conta_Listar():
+            if contal.Get_Numero_Do_Banco() == Numero_Do_Banco:
+                NConta.atualizar(Conta(contal.get_id(), contal.get_id_Cliente(), contal.get_Data_De_Abertura(), contal.Get_Numero_Do_Banco(), contal.get_saldo + Transferencia))
+    def Listar_Minhas_Transferencias():
+        Transferencias = []
+        for transferencia in view.listar_contas_do_cliente():
+            if transferencia.get_id_Cliente == view.transferir().get_id_Cliente:
+                Transferencias.append(transferencia)
+        return Transferencias
+             
 
+
+                
 
 
 
