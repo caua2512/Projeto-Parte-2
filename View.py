@@ -57,25 +57,17 @@ class view:
     def sacar(Sacar):
         for conta in view.listar_contas_do_cliente():
             NConta.atualizar(Conta(conta.get_id(), conta.get_id_Cliente(), conta.get_Data_De_Abertura(), conta.Get_Numero_Do_Banco(), conta.get_saldo - Sacar))
-    def transferir(id, Numero_Do_Banco, Transferencia):
-        for conta in view.listar_contas_do_cliente():
-            NConta.atualizar(Conta(conta.get_id(), conta.get_id_Cliente(), conta.get_Data_De_Abertura(), conta.Get_Numero_Do_Banco(), conta.get_saldo - Transferencia))
-        for contal in view.Conta_Listar():
-            if contal.Get_Numero_Do_Banco() == Numero_Do_Banco:
-                NConta.atualizar(Conta(contal.get_id(), contal.get_id_Cliente(), contal.get_Data_De_Abertura(), contal.Get_Numero_Do_Banco(), contal.get_saldo + Transferencia))
+    def transferir(id_conta1, id_conta2, Transferencia):
+        conta1 =  view.Conta_Listar_Id(id_conta1)
+        conta2 =  view.Conta_Listar_Id(id_conta2)
+        view.Conta_Atualizar(id_conta1, conta1.get_id_Cliente(), conta1.get_Data_De_Abertura(), conta1.Get_Numero_Do_Banco(), conta1.get_saldo() - transferencia)
+        view.Conta_Atualizar(id_conta2, conta2.get_id_Cliente(), conta2.get_Data_De_Abertura(), conta2.Get_Numero_Do_Banco(), conta2.get_saldo() + transferencia)
     def Listar_Minhas_Transferencias():
         Transferencias = []
         for transferencia in view.listar_contas_do_cliente():
             if transferencia.get_id_Cliente == view.transferir().get_id_Cliente:
                 Transferencias.append(transferencia)
         return Transferencias
-             
-
-
-                
-
-
-
 
 
 
