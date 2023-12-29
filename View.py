@@ -1,12 +1,13 @@
 from Models.Conta import Conta, NConta
 from Models.Cliente import Cliente, NCliente
 from Models.Banco import Banco, NBanco
+from Models.Transferencia import Transferencia, NTransferencia
 import datetime
 
 class view:
     def Banco_Listar():
         return NBanco.listar()
-    def Banco_Listar_Id():
+    def Banco_Listar_Id(id):
         return NBanco.get_banco(id)
     def Banco_Inserir(nome, endereço):
         return NBanco.inserir(0, nome, endereço)
@@ -45,10 +46,10 @@ class view:
         NConta.Atualizar(Conta(id, id_Cliente, Data_De_Abertura, Numero_Do_Banco, Saldo))
     def Conta_Excluir(id):
         NConta.Excluir(Conta(id, 0, " ", " ", " "))
-    def listar_contas_do_cliente(clienteI):
+    def listar_contas_do_cliente(id_clienteLogado):
         Contas_Do_Cliente = []
         for Conta in view.Conta_Listar():
-            if Conta.get_id_Cliente() == clienteI:
+            if Conta.get_id_Cliente() == id_clienteLogado:
                 Contas_Do_Cliente.append(Conta)
         return Contas_Do_Cliente
     def depositar(Depositar):
@@ -57,17 +58,35 @@ class view:
     def sacar(Sacar):
         for conta in view.listar_contas_do_cliente():
             NConta.atualizar(Conta(conta.get_id(), conta.get_id_Cliente(), conta.get_Data_De_Abertura(), conta.Get_Numero_Do_Banco(), conta.get_saldo - Sacar))
+    def Transferencia_Listar():
+        return NTransferencia.listar()
+    def Transferencia_Listar_Id(id):
+        return NTransferencia.get_Transferencia(id)
+    def Transferencia_Inserir(id_Cliente,id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia):
+        return NTransferencia.inserir(Transferencia(0,id_Cliente,id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia))
+    def Transferencia_Atualizar(id,id_Cliente,id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia):
+        return NTransferencia.atualizar(Transferencia(id,id_Cliente, id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia))
+    def Transferencia_Excluir(id):
+        return NTransferencia.excluir(id,0," "," ")            
     def transferir(id_conta1, id_conta2, Transferencia):
         conta1 =  view.Conta_Listar_Id(id_conta1)
         conta2 =  view.Conta_Listar_Id(id_conta2)
+        view.Transferencia_Inserir(conta1.get_id_Cliente(),conta1.get_id(), conta2.get_id(), datetime.datetime.now(), Transferencia)
+        view.Transferencia_Inserir(conta2.get_id_Cliente(),conta1.get_id(), conta2.get_id(), datetime.datetime.now(), Transferencia)
         view.Conta_Atualizar(id_conta1, conta1.get_id_Cliente(), conta1.get_Data_De_Abertura(), conta1.Get_Numero_Do_Banco(), conta1.get_saldo() - transferencia)
         view.Conta_Atualizar(id_conta2, conta2.get_id_Cliente(), conta2.get_Data_De_Abertura(), conta2.Get_Numero_Do_Banco(), conta2.get_saldo() + transferencia)
-    def Listar_Minhas_Transferencias():
-        Transferencias = []
-        for transferencia in view.listar_contas_do_cliente():
-            if transferencia.get_id_Cliente == view.transferir().get_id_Cliente:
-                Transferencias.append(transferencia)
-        return Transferencias
+    def Listar_Minhas_Transferencias(id_ClienteLogado):
+        Transferencias_do_cliente = []
+        for Transferencia in view.Transferencia_Listar():
+            if Transferencia.get_id_Cliente() == id_ClienteLogado:
+                Transferencias_do_cliente.append(Transferencia)
+        return Transferencias_do_cliente
+
+
+                
+
+
+
 
 
 
