@@ -32,7 +32,7 @@ class Cliente:
         return self.__Data_De_Nascimento
     def set_Email(self, email):
         self.__Email = email
-    def Get_Email(self):
+    def get_Email(self):
         return self.__Email
     def set_CPF(self, cpf):
         self.__cpf = cpf
@@ -40,7 +40,7 @@ class Cliente:
         return self.__cpf
     def set_Fone(self, Fone):
         self.__Fone = Fone
-    def Get_Fone(self):
+    def get_Fone(self):
         return self.__Fone
     def set_Senha(self, senha):
         self.__Senha = senha
@@ -65,66 +65,20 @@ class Cliente:
             "Senha": self.__Senha
         }
     
-class NCliente:
-    __Clientes = []
-
-    @classmethod
-    def inserir(cls, obj):
-        cls.abrir()
-        id = 0
-        for aux in cls.__Clientes:
-            if aux.get_id() > id: id = aux.get_id()
-        obj.set_id(id + 1)
-        cls.__Clientes.append(obj)
-        cls.salvar()
-    
-    @classmethod
-    def Listar(cls):
-        cls.abrir()
-        return cls.__Clientes
-    
-    @classmethod
-    def Listar_id(cls, obj):
-        cls.abrir()
-        for obj in cls.__Clientes:
-            if obj.get_id() == id: return obj
-        return None
-    
-    @classmethod
-    def Atualizar(cls, obj):
-        cls.abrir()
-        aux = cls.Listar_id(obj.get_id())
-        if aux is not None:
-            aux.set_id_Banco(obj.get_id_Banco())
-            aux.set_Nome(obj.Get_Nome())
-            aux.set_Data_De_Nascimento(obj.get_Data_De_Nascimento())
-            aux.set_Email(obj.get_Email())
-            aux.set_CPF(obj.Get_CPF())
-            aux.set_Fone(obj.get_Fone())
-            aux.set_Senha(obj.get_Senha())
-            cls.salvar()
-
-    @classmethod
-    def Excluir(cls, obj):
-        cls.abrir()
-        aux = cls.Listar_id(obj.get_id())
-        if aux is not None:
-            cls.__Clientes.remove(obj)
-            cls.salvar()
-
+class NCliente(Modelo):
     @classmethod
     def abrir(cls):
-        cls.__Clientes = []
+        cls.objetos = []
         try:
             with open("Clientes.json", mode="r") as arquivo:
                 Clientes_json = json.load(arquivo)
                 for obj in Clientes_json:
                     aux =  Cliente(obj["id"], obj["id_Banco"], datetime.datetime.strptime(obj["Data_De_Nascimento"], "%d/%m/%Y %H:%M"), obj["Email"], obj["CPF"], obj["Fone"], obj["Senha"])
-                    cls.__Clientes.append(aux)
+                    cls.objetos(aux)
         except FileNotFoundError:
             pass
     
     @classmethod
     def salvar(cls):
         with open("Clientes.json", mode="w") as arquivo:
-            json.dump(cls.__Clientes, arquivo, default=Cliente.to_json)
+            json.dump(cls.objetos, arquivo, default=vars)
