@@ -37,11 +37,11 @@ class Transferencia:
         return self.__Saldo_da_transferencia
     
     def __eq__(self, x):
-        if self.__id == x.__id and self.__Data_De_Transferencia == x.__Data_De_Transferencia and self.__id_cliente == x.__id_cliente and self.__id_Conta1 == x.__id_Conta1 and self.__id_Conta2 == x.__id_Conta2 and self.__Saldo_da_transferencia == x.__Saldo_da_transferencia:
+        if self.__id == x.__id and self.__id_cliente == x.__id_cliente and self.__id_Conta1 == x.__id_Conta1 and self.__id_Conta2 == x.__id_Conta2 and self.__Data_De_Transferencia == x.__Data_De_Transferencia and self.__Saldo_da_transferencia == x.__Saldo_da_transferencia:
             return True
         return False 
     def __str__(self):
-        return f"{self.__id} - {self.id_cliente} - {self.__id_Conta1} - {self.__id_Conta2} - {self.__Data_De_Transferencia.strftime('%d/%m/%Y %H:%M')} - {self.__Saldo_da_transferencia}"
+        return f"{self.__id} - {self.__id_cliente} - {self.__id_Conta1} - {self.__id_Conta2} - {self.__Data_De_Transferencia.strftime('%d/%m/%Y %H:%M')} - {self.__Saldo_da_transferencia}"
     def to_json(self):
         return {
             "id": self.__id,
@@ -60,7 +60,7 @@ class NTransferencia(Modelo):
             with open("Transferencias.json", mode="r") as arquivo:
                 Transferencias_json = json.load(arquivo)
                 for obj in Transferencias_json:
-                    aux =  Transferencia(obj["id"], datetime.datetime.strptime(obj["Data_De_Transferencia"], "%d/%m/%Y %H:%M"), obj["id_Cliente"], obj["id_Conta1"], obj["id_Conta2"], obj["Saldo_Da_Transferencia"])
+                    aux =  Transferencia(obj["id"], obj["id_Cliente"], obj["id_Conta1"], obj["id_Conta2"],datetime.datetime.strptime(obj["Data_De_Transferencia"], "%d/%m/%Y %H:%M"), obj["Saldo_Da_Transferencia"])
                     cls.objetos.append(aux)
         except FileNotFoundError:
             pass
@@ -68,4 +68,4 @@ class NTransferencia(Modelo):
     @classmethod
     def salvar(cls):
         with open("Transferencias.json", mode="w") as arquivo:
-            json.dump(cls.objetos, arquivo, default=vars)
+            json.dump(cls.objetos, arquivo, default=Transferencia.to_json)
