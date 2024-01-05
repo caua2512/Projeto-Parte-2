@@ -16,6 +16,3 @@ class ListarContasUI:
       for obj in contas: dic.append(obj.to_json())
       df = pd.DataFrame(dic)
       st.dataframe(df)
-
-
-
