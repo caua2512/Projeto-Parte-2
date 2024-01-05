@@ -8,7 +8,7 @@ class view:
     def Banco_Listar():
         return NBanco.listar()
     def Banco_Listar_Id(id):
-        return NBanco.get_banco(id)
+        return NBanco.listar_id(id)
     def Banco_Inserir(nome, endereço):
         return NBanco.inserir(Banco(0, nome, endereço))
     def Banco_Atualizar(id, nome, endereço):
@@ -29,7 +29,7 @@ class view:
     def Cliente_Admin():
         for cliente in view.Cliente_Listar():
             if cliente.get_Nome() == "admin": return
-        view.Cliente_Inserir(0,"admin","25/12/2006 12:30","admin","admin", "admin", "admin")   
+        view.Cliente_Inserir(0,"admin",datetime.datetime.strptime("25/12/2006 12:30", "%d/%m/%Y %H:%M"),"admin","admin", "admin", "admin")   
     def Cliente_Login(email, senha):
         for cliente in view.Cliente_Listar():
             if cliente.get_Email() == email and cliente.get_Senha() == senha:
@@ -68,14 +68,14 @@ class view:
     def Transferencia_Atualizar(id,id_Cliente,id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia):
         return NTransferencia.atualizar(Transferencia(id,id_Cliente, id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia))
     def Transferencia_Excluir(id):
-        return NTransferencia.excluir(id,0," "," ")            
+        return NTransferencia.excluir(Transferencia(id,0,0,0," "," "))            
     def transferir(id_conta1, id_conta2, Transferencia):
         conta1 =  view.Conta_Listar_Id(id_conta1)
         conta2 =  view.Conta_Listar_Id(id_conta2)
         view.Transferencia_Inserir(conta1.get_id_Cliente(),conta1.get_id(), conta2.get_id(), datetime.datetime.now(), Transferencia)
         view.Transferencia_Inserir(conta2.get_id_Cliente(),conta1.get_id(), conta2.get_id(), datetime.datetime.now(), Transferencia)
-        view.Conta_Atualizar(id_conta1, conta1.get_id_Cliente(), conta1.get_Data_De_Abertura(), conta1.Get_Numero_Do_Banco(), conta1.get_saldo() - Transferencia)
-        view.Conta_Atualizar(id_conta2, conta2.get_id_Cliente(), conta2.get_Data_De_Abertura(), conta2.Get_Numero_Do_Banco(), conta2.get_saldo() + Transferencia)
+        view.Conta_Atualizar(conta1.get_id(), conta1.get_id_Cliente(), conta1.get_Data_De_Abertura(), conta1.get_Numero_Do_Banco(), conta1.get_saldo() - Transferencia)
+        view.Conta_Atualizar(conta2.get_id(), conta2.get_id_Cliente(), conta2.get_Data_De_Abertura(), conta2.get_Numero_Do_Banco(), conta2.get_saldo() + Transferencia)
     def Listar_Minhas_Transferencias(id_ClienteLogado):
         Transferencias_do_cliente = []
         for Transferencia in view.Transferencia_Listar():
@@ -85,10 +85,3 @@ class view:
 
 
                 
-
-
-
-
-
-
-
