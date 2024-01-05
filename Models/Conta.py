@@ -62,4 +62,4 @@ class NConta(Modelo):
     @classmethod
     def salvar(cls):
         with open("Contas.json", mode="w") as arquivo:
-            json.dump(cls.objetos, arquivo, default=vars)
+            json.dump(cls.objetos, arquivo, default=Conta.to_json)
