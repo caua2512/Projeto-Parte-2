@@ -32,7 +32,7 @@ class ManterTransferenciaUI:
     Saldo_Da_Transferencia = st.number_input("Informe o Saldo Da tranferencia")
     if st.button("Inserir"):
         data = datetime.datetime.strptime(Data_De_Transferencia, "%d/%m/%Y %H:%M")
-        view.Transferencia_Inserir(cliente.get_id(),conta1.get_id(),conta2.get_id(), data, Saldo_Da_Transferencia)
+        view.transferir(conta1.get_id(),conta2.get_id(), Saldo_Da_Transferencia)
         st.success("Transferencia Inserida com sucesso")
         time.sleep(2)
         st.rerun()
