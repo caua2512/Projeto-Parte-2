@@ -18,25 +18,14 @@ class ManterClienteUI:
       st.write("Nenhum cliente cadastrado")
     else:
       dic = []
-      for obj in clientes:
-        for cliente in clientes:
-          id = cliente.get_id()
-          id_Banco = cliente.get_id_Banco()
-          nome = cliente.get_Nome()
-          Data_De_Nascimento = cliente.get_Data_De_Nascimento()
-          Email = cliente.get_Email()
-          cpf = cliente.get_CPF()
-          Fone = cliente.get_Fone()
-          Senha = cliente.get_Senha()
-          dic.append(obj[id, id_Banco, nome, Data_De_Nascimento, Email, cpf, Fone, Senha])
-
-      df = pd.dataframe(dic, columns=["id","id_Banco", "Nome", "Data_De_Nascimento", "Email", "CPF", "Fone", "Senha"])
+      for obj in clientes: dic.append(obj.__dict__)
+      df = pd.DataFrame(dic)
       st.dataframe(df)
   def Inserir():
     nome = st.text_input("Informe o nome")
     bancos = view.Banco_Listar()
     banco = st.selectbox("selecione Banco", bancos)
-    Data_de_nascimento = st.date_input("Informe a data de nascimento em formato dd/mm/YYYY")
+    Data_de_nascimento = st.text_input("Informe a data de nascimento em formato dd/mm/YYYY")
     email = st.text_input("Informe o e-mail")
     cpf = st.text_input("infrome o cpf")
     fone = st.text_input("Informe o fone")
@@ -44,7 +33,7 @@ class ManterClienteUI:
     if st.button("Inserir"):
       data = datetime.datetime.strptime(Data_de_nascimento, "%d/%m/%Y %H:%M")
       view.Cliente_Inserir(banco.get_id(), nome, data, email, cpf,fone, senha)
-      st.sucess("Cliente inserido com sucesso")
+      st.success("Cliente inserido com sucesso")
       time.sleep(2)
       st.rerun()
   def Atualizar():
@@ -60,25 +49,28 @@ class ManterClienteUI:
       else:
         banco = st.selectbox("Selecione o Banco", bancos)
       nome = st.text_input("Informe o nome", op.get_Nome())
-      Data_de_nascimento = st.date_input("Informe a data de nascimento em formato dd/mm/YYYY", op.get_Data_De_Nascimento().strftime("%d/%m/%Y"))
-      email = st.text_input("Informe o e-mail", op.get_email())
+      Data_de_nascimento = st.text_input("Informe a data de nascimento em formato dd/mm/YYYY", op.get_Data_De_Nascimento().strftime("%d/%m/%Y %H:%M"))
+      email = st.text_input("Informe o e-mail", op.get_Email())
       cpf = st.text_input("infrome o cpf", op.get_CPF())
       fone = st.text_input("Informe o fone", op.get_Fone())
       senha = st.text_input("Informe a senha", op.get_Senha())
       if st.button("Atualizar"):
-        data = datetime.datetime.strptime(Data_de_nascimento, "%d/%m/%Y")
-        view.Cliente_Atualizar(op.get_id(),banco.get_id(), nome, data, email, cpf, fone, senha)
-        st.sucess("Cliente inserido com sucesso")
-        time.sleep(2)
-        st.rerun()
+        try:
+          data = datetime.datetime.strptime(Data_de_nascimento, '%d/%m/%Y %H:%M')
+          view.Cliente_Atualizar(op.get_id(),banco.get_id(), nome, data, email, cpf, fone, senha)
+          st.success("Cliente atualizado com sucesso")
+          time.sleep(2)
+          st.rerun()
+        except:
+          st.error("Informações invalidas")
   def Excluir():
     clientes = view.Cliente_Listar()
     if len(clientes) == 0:
       st.write("Nenhum cliente excluido")
     else:
       op = st.selectbox("seleciona cliente para excluir", clientes)
-      if st.button("Inserir"):
+      if st.button("Excluir"):
         view.Cliente_Excluir(op.get_id())
-        st.sucess("Cliente inserido com sucesso")
+        st.success("Cliente excluido com sucesso")
         time.sleep(2)
         st.rerun()
