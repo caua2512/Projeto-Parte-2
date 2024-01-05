@@ -74,12 +74,12 @@ class NCliente(Modelo):
             with open("Clientes.json", mode="r") as arquivo:
                 Clientes_json = json.load(arquivo)
                 for obj in Clientes_json:
-                    aux =  Cliente(obj["id"], obj["id_Banco"], datetime.datetime.strptime(obj["Data_De_Nascimento"], "%d/%m/%Y %H:%M"), obj["Email"], obj["CPF"], obj["Fone"], obj["Senha"])
-                    cls.objetos(aux)
+                    aux =  Cliente(obj["id"], obj["id_Banco"],obj["Nome"], datetime.datetime.strptime(obj["Data_De_Nascimento"], "%d/%m/%Y %H:%M"), obj["Email"], obj["CPF"], obj["Fone"], obj["Senha"])
+                    cls.objetos.append(aux)
         except FileNotFoundError:
             pass
-    
+
     @classmethod
     def salvar(cls):
         with open("Clientes.json", mode="w") as arquivo:
-            json.dump(cls.objetos, arquivo, default=vars)
+            json.dump(cls.objetos, arquivo, default=Cliente.to_json)
