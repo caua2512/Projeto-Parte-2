@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from Models.Conta import Conta,NConta
 from View import view
 import datetime
 import time
@@ -13,33 +14,24 @@ class ManterContaUI:
     with tab4: ManterContaUI.Excluir()    
 
   def Listar():
-    Contas = view.Contas_Listar()
+    Contas = view.Conta_Listar()
     if len(Contas) == 0:
       st.write("Nenhuma Conta Cadastrada")
     else:
       dic = []
-      for obj in Contas:
-        for Conta in Contas:
-          id = Conta.get_id()
-          id_Cliente = Conta.get_id_Cliente()
-          Data_De_Abertura = Conta.get_Data_De_Abertura()
-          Numero_Do_Banco = Conta.Get_Numero_Do_Banco()
-          Saldo = Conta.get_saldo()
-          dic.append(obj[id, id_Cliente,Data_De_Abertura,Numero_Do_Banco,Saldo])
-        
-      df = pd.DataFrame(dic, columns=["id", "ID do Cliente", "Data de abertura", "Numero do banco", "Saldo"])
+      for obj in Contas: dic.append(obj.__dict__)
+      df = pd.DataFrame(dic)
       st.dataframe(df)
-
   def Inserir():
-    Data_De_Abertura = st.text_input("Informe a data de Abertura em formato: dd/mm/aaaa HH:MM *")
     clientes = view.Cliente_Listar()
     cliente = st.selectbox("Selecione o cliente", clientes)
+    Data_De_Abertura = st.text_input("Informe a data de abertura")
     NumeroB = st.text_input("Informe o numero do banco")
     Saldo = st.number_input("Informe o Saldo Inical")
     if st.button("Inserir"):
-        data = datetime.datetime.strptime(Data_De_Abertura, "%d/%m%/%Y %H:%M")
+        data = datetime.datetime.strptime(Data_De_Abertura, "%d/%m/%Y %H:%M")
         view.Conta_Inserir(cliente.get_id(), data, NumeroB, Saldo)
-        st.sucess("Conta Inserida com sucesso")
+        st.success("Conta Inserida com sucesso")
         time.sleep(2)
         st.rerun()
   def Atualizar():
@@ -48,19 +40,20 @@ class ManterContaUI:
       st.write("Nenhuma conta cadastrada")
     else:
       op = st.selectbox("Escolhar a Conta para atualizar", contas)
-      Data_De_Abertura = st.text_input("Informe a data de Abertura em formato: dd/mm/aaaa HH:MM *", op.get_Data_De_Abertura().strftime('%d/%m/%Y %H:%M'))
-      NumeroB = st.text_input("Informe o numero do banco", op.Get_Numero_Do_Banco())
-      Saldo = st.number_input("Informe o Saldo Inical", op.get_saldo())
-      clientes = view.Cliente_Listar
+      Data_De_Abertura = st.text_input("Informe a data de abertura", op.get_Data_De_Abertura().strftime("%d/%m/%Y %H:%M"))
+      clientes = view.Cliente_Listar()
       cliente_atual = view.Cliente_Listar_Id((op.get_id_Cliente()))
       if cliente_atual is not None:
         cliente = st.selectbox("Selecione o novo cliente", clientes, clientes.index(cliente_atual))
       else:
         cliente = st.selectbox("Selecione o novo cliente", clientes)
+      NumeroB = st.text_input("Informe o numero do banco", op.get_Numero_Do_Banco())
+      Saldo = st.number_input("Informe o Saldo Inical", op.get_saldo())
       if st.button("Atualizar"):
         try:
           data = datetime.datetime.strptime(Data_De_Abertura,"%d/%m/%Y %H:%M")
           view.Conta_Atualizar(op.get_id(), cliente.get_id(), data, NumeroB, Saldo)
+          st.success("Conta Atualizada com sucesso")
           time.sleep(2)
           st.rerun()
         except:
@@ -73,6 +66,6 @@ class ManterContaUI:
       op = st.selectbox("Exclusão de Conta", contas)
       if st.button("Excluir"):
         view.Conta_Excluir(op.get_id())
-        st.sucess("Conta excluida com sucesso")
+        st.success("Conta excluida com sucesso")
         time.sleep(2)
         st.rerun()
