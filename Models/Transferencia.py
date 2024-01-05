@@ -1,3 +1,4 @@
+from Models.Modelo import Modelo
 import datetime
 import json
 
@@ -44,70 +45,27 @@ class Transferencia:
     def to_json(self):
         return {
             "id": self.__id,
-            "id_Cliente": self.__id_cliente
+            "id_Cliente": self.__id_cliente,
             "id_Conta1": self.__id_Conta1,
             "id_Conta2": self.__id_Conta2,
             "Data_De_Transferencia": self.__Data_De_Transferencia.strftime('%d/%m/%Y %H:%M'),
             "Saldo_Da_Transferencia": self.__Saldo_da_transferencia
         }
     
-class NTransferencia:
-    __Transferencias = []
-
-    @classmethod
-    def inserir(cls, obj):
-        cls.abrir()
-        id = 0
-        for aux in cls.__Transferencias:
-            if aux.get_id() > id: id = aux.get_id()
-        obj.set_id(id + 1)
-        cls.__Transferencias.append(obj)
-        cls.salvar()
-    
-    @classmethod
-    def Listar(cls):
-        cls.abrir()
-        return cls.__Transferencias
-    
-    @classmethod
-    def Listar_id(cls, obj):
-        cls.abrir()
-        for obj in cls.__Transferencias:
-            if obj.get_id() == id: return obj
-        return None
-    
-    @classmethod
-    def Atualizar(cls, obj):
-        cls.abrir()
-        aux = cls.Listar_id(obj.get_id())
-        if aux is not None:
-            aux.set_Data_De_Transferencia(obj.get_Data_De_Transferencia())
-            aux.set_id_Cliente(obj.get_id_Cliente())
-            aux.set_id_Conta1(obj.get_id_Conta1())
-            aux.set_id_Conta2(obj.get_id_Conta2())
-            aux.set_Saldo_da_transferencia(obj.get_Saldo_da_transferencia())
-            cls.salvar()
-    @classmethod
-    def Excluir(cls, obj):
-        cls.abrir()
-        aux = cls.Listar_id(obj.get_id())
-        if aux is not None:
-            cls.__Transferencias.remove(obj)
-            cls.salvar()
-
+class NTransferencia(Modelo):
     @classmethod
     def abrir(cls):
-        cls.__Transferencias = []
+        cls.objetos = []
         try:
             with open("Transferencias.json", mode="r") as arquivo:
                 Transferencias_json = json.load(arquivo)
                 for obj in Transferencias_json:
                     aux =  Transferencia(obj["id"], datetime.datetime.strptime(obj["Data_De_Transferencia"], "%d/%m/%Y %H:%M"), obj["id_Cliente"], obj["id_Conta1"], obj["id_Conta2"], obj["Saldo_Da_Transferencia"])
-                    cls.__Transferencias.append(aux)
+                    cls.objetos.append(aux)
         except FileNotFoundError:
             pass
     
     @classmethod
     def salvar(cls):
         with open("Transferencias.json", mode="w") as arquivo:
-            json.dump(cls.__Transferencias, arquivo, default=Conta.to_json)
+            json.dump(cls.objetos, arquivo, default=vars)
