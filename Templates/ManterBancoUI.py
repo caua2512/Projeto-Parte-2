@@ -17,14 +17,8 @@ class ManterBancoUI:
       st.write("Nenhum Banco Cadastrado")
     else:
       dic = []
-      for obj in Bancos:
-        for Banco in Bancos:
-          id = Banco.get_id()
-          Nome = Banco.get_nome()
-          Endereço = Banco.get_endereco()
-          dic.append(obj[id,Nome,Endereço])
-        
-      df = pd.DataFrame(dic, columns=["id", "Nome", "Endereço"])
+      for obj in Bancos: dic.append(obj.__dict__)
+      df = pd.DataFrame(dic)
       st.dataframe(df)
   def Inserir():
     nome = st.text_input("Informe o nome")
@@ -43,8 +37,8 @@ class ManterBancoUI:
       st.write("Nenhum banco cadastrado")
     else:
       op = st.selectbox("seleciona banco para atualizar", bancos)
-      nome = st.text_input("Informe o nome")
-      endereço = st.text_input("Informe o Endereço")
+      nome = st.text_input("Informe o nome", op.get_nome())
+      endereço = st.text_input("Informe o Endereço", op.get_endereco())
       if st.button("Atualizar"):
         try:
           view.Banco_Atualizar(op.get_id(), nome, endereço)
