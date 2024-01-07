@@ -8,7 +8,7 @@ class loginUI:
   def Entrar():
     email = st.text_input("Informe o e-mail")
     senha = st.text_input("Informe a senha")
-    if st.button("Entrar"):
+    if st.button("Login"):
       cliente = view.Cliente_Login(email,senha)
       if cliente is not None:
         st.success("Login realizado com sucesso")
