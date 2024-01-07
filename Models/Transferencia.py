@@ -10,7 +10,10 @@ class Transferencia:
         self.__id_Conta2 = id_Conta2
         self.__Data_De_Transferencia = Data_De_Transferencia
         self.__Saldo_da_transferencia = Saldo_da_transferencia
-    
+        if Data_De_Transferencia == "": raise ValueError("Informações invalidas")
+        if Saldo_da_transferencia < 0: raise ValueError("O valor não pode ser negativo ou nulo")
+
+
     def set_id(self, id):
         self.__id = id
     def get_id(self):
@@ -29,10 +32,12 @@ class Transferencia:
         return self.__id_Conta2
     def set_Data_De_Transferencia(self, ddt):
         self.__Data_De_Transferencia = ddt
+        if ddt == "": raise ValueError("Informações invalidas")
     def get_Data_De_Transferencia(self):
         return self.__Data_De_Transferencia
     def set_Saldo_da_transferencia(self, saldoT):
         self.__Saldo_da_transferencia = saldoT
+        if saldoT < 0: raise ValueError("O valor não pode ser negativo ou nulo")
     def get_Saldo_da_transferencia(self):
         return self.__Saldo_da_transferencia
     
