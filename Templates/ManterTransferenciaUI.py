@@ -28,14 +28,17 @@ class ManterTransferenciaUI:
     contas = view.Conta_Listar()
     conta1 = st.selectbox("Selecione a conta para realizar a transferencia", contas)
     conta2 = st.selectbox("Selecione a conta para receber a transferencia", contas)
-    Data_De_Transferencia = st.text_input("Informe a data da Transferencia em formato: dd/mm/aaaa HH:MM *")
+    Data_De_Transferencia = datetime.datetime.now()
     Saldo_Da_Transferencia = st.number_input("Informe o Saldo Da tranferencia")
     if st.button("Inserir"):
-        data = datetime.datetime.strptime(Data_De_Transferencia, "%d/%m/%Y %H:%M")
-        view.transferir(conta1.get_id(),conta2.get_id(), Saldo_Da_Transferencia)
-        st.success("Transferencia Inserida com sucesso")
+      try:
+        view.Transferencia_Inserir(cliente.get_id(),conta1.get_id(),conta2.get_id(),Data_De_Transferencia, Saldo_Da_Transferencia)
+        st.success("Transferencia inserida com sucesso")
         time.sleep(2)
         st.rerun()
+      except Exception as erro:
+        st.error(erro)
+        st.error("Informações invalidas")
   def Atualizar():
     transferencias = view.Transferencia_Listar()
     if len(transferencias) == 0:
@@ -53,23 +56,24 @@ class ManterTransferenciaUI:
       contas = view.Conta_Listar()
       conta1_atual = view.Conta_Listar_Id((op.get_id_Conta1()))
       if conta1_atual is not None:
-        conta1 = st.selectbox("Selecione o novo cliente", contas, contas.index(conta1_atual))
+        conta1 = st.selectbox("Selecione o nova conta para transferencia", contas, contas.index(conta1_atual))
       else:
-        conta1 = st.selectbox("Selecione o novo cliente", contas)
-      conta2_atual = view.Conta_Listar_Id((op.get_id_Cliente()))
+        conta1 = st.selectbox("Selecione o nova conta para transferencia", contas)
+      conta2_atual = view.Conta_Listar_Id((op.get_id_Conta2()))
       if conta2_atual is not None:
-        conta2 = st.selectbox("Selecione o novo cliente", contas, contas.index(conta2_atual))
+        conta2 = st.selectbox("Selecione o nova conta para deposito", contas, contas.index(conta2_atual))
       else:
-        conta2 = st.selectbox("Selecione o novo cliente", contas)
+        conta2 = st.selectbox("Selecione o nova conta para deposito", contas)
       if st.button("Atualizar"):
         try:
           data = datetime.datetime.strptime(Data_De_Transferencia,"%d/%m/%Y %H:%M")
           view.Transferencia_Atualizar(op.get_id(), cliente.get_id(),conta1.get_id(),conta2.get_id(), data, Saldo_Da_Transferencia)
-          st.success("Transferencia Atualizada com sucesso")
+          st.success("Transferencia atualizada com sucesso")
           time.sleep(2)
           st.rerun()
-        except:
-          st.error("Informações invalidas")
+        except Exception as erro:
+          st.error(erro)
+          st.error("Informações invalidas") 
   def Excluir():
     Transferencias = view.Transferencia_Listar()
     if len(Transferencias) == 0:
@@ -78,6 +82,6 @@ class ManterTransferenciaUI:
       op = st.selectbox("Exclusão de Transferencia", Transferencias)
       if st.button("Excluir"):
         view.Transferencia_Excluir(op.get_id())
-        st.success("Conta excluida com sucesso")
+        st.success("Transferencia excluida com sucesso")
         time.sleep(2)
         st.rerun()
