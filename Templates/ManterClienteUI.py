@@ -31,11 +31,15 @@ class ManterClienteUI:
     fone = st.text_input("Informe o fone")
     senha = st.text_input("Informe a senha")
     if st.button("Inserir"):
-      data = datetime.datetime.strptime(Data_de_nascimento, "%d/%m/%Y %H:%M")
-      view.Cliente_Inserir(banco.get_id(), nome, data, email, cpf,fone, senha)
-      st.success("Cliente inserido com sucesso")
-      time.sleep(2)
-      st.rerun()
+      try:
+        data = datetime.datetime.strptime(Data_de_nascimento, "%d/%m/%Y %H:%M")
+        view.Cliente_Inserir(banco.get_id(), nome, data, email, cpf,fone, senha)
+        st.success("Cliente inserido com sucesso")
+        time.sleep(2)
+        st.rerun()
+      except Exception as erro:
+        st.error(erro)
+        st.error("Informações invalidas")
   def Atualizar():
     clientes = view.Cliente_Listar()
     if len(clientes) == 0:
@@ -61,7 +65,8 @@ class ManterClienteUI:
           st.success("Cliente atualizado com sucesso")
           time.sleep(2)
           st.rerun()
-        except:
+        except Exception as erro:
+          st.error(erro)
           st.error("Informações invalidas")
   def Excluir():
     clientes = view.Cliente_Listar()
