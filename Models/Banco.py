@@ -7,6 +7,8 @@ class Banco:
         self.__nome = nome
         self.__endereco = endereco
         self.__clientes = clientes
+        if nome == "": raise ValueError("Informações invalidas")
+        if endereco == "": raise ValueError("Informações invalidas")
 
     def get_id(self): return self.__id
     def get_nome(self): return self.__nome
@@ -14,8 +16,12 @@ class Banco:
     def get_clientes(self): return self.__clientes
 
     def set_id(self, id): self.__id = id
-    def set_nome(self, nome): self.__nome = nome
-    def set_endereco(self, endereco): self.__endereco = endereco
+    def set_nome(self, nome): 
+        if nome == "": raise ValueError("Informações invalidas")
+        self.__nome = nome
+    def set_endereco(self, endereco): 
+        if endereco == "": raise ValueError("Informações invalidas")
+        self.__endereco = endereco
     def set_clientes(self, clientes): self.__clientes = clientes
 
     def adiciona_cliente(self, cliente_id):
