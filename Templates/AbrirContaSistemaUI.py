@@ -19,7 +19,7 @@ class AbrirContaSistemaUI:
       Data = datetime.datetime.strptime(Data_de_nascimento,"%d/%m/%Y %H:%M")
       try:
         view.Cliente_Inserir(banco.get_id(),nome ,Data, email, cpf, fone, senha)
-        st.sucess("Cadastrado com sucesso")
+        st.sucess("Cadastrado realizado com sucesso")
         time.sleep(2)
         st.rerun()
       except:
