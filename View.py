@@ -10,8 +10,12 @@ class view:
     def Banco_Listar_Id(id):
         return NBanco.listar_id(id)
     def Banco_Inserir(nome, endereço):
+        if nome == " ": raise ValueError("Informações invalidas")
+        if endereço == " ": raise ValueError("Informações invalidas")
         return NBanco.inserir(Banco(0, nome, endereço))
     def Banco_Atualizar(id, nome, endereço):
+        if nome == " ": raise ValueError("Informações invalidas")
+        if endereço == " ": raise ValueError("Informações invalidas")
         return NBanco.atualizar(Banco(id, nome, endereço))
     def Banco_Excluir(id):
         return NBanco.excluir(Banco(id," "," "))
@@ -20,8 +24,20 @@ class view:
     def Cliente_Listar_Id(id):
         return NCliente.listar_id(id)
     def Cliente_Inserir( id_Banco, Nome, Data_De_Nascimento, Email, cpf, Fone, Senha):
+        if Nome == "": raise ValueError("Informações invalidas")
+        if Data_De_Nascimento == "": raise ValueError("Informações invalidas")
+        if Email == "": raise ValueError("Informações invalidas")
+        if cpf == "": raise ValueError("Informações invalidas")
+        if Fone == "": raise ValueError("Informações invalidas")
+        if Senha == "": raise ValueError("Informações invalidas")
         NCliente.inserir(Cliente(0,id_Banco, Nome, Data_De_Nascimento, Email, cpf, Fone, Senha))
     def Cliente_Atualizar(id, id_Banco, Nome, Data_De_Nascimento, Email, cpf, Fone, Senha):
+        if Nome == "": raise ValueError("Informações invalidas")
+        if Data_De_Nascimento == "": raise ValueError("Informações invalidas")
+        if Email == "": raise ValueError("Informações invalidas")
+        if cpf == "": raise ValueError("Informações invalidas")
+        if Fone == "": raise ValueError("Informações invalidas")
+        if Senha == "": raise ValueError("Informações invalidas")
         NCliente.atualizar(Cliente(id, id_Banco, Nome, Data_De_Nascimento, Email, cpf, Fone, Senha))
     def Cliente_Excluir(id):
         cliente = Cliente(id, 0, " ", " ", " "," "," "," ")
@@ -42,11 +58,17 @@ class view:
     def Conta_Listar_Id(id):
         return NConta.listar_id(id)
     def Conta_Inserir( id_Cliente, Data_De_Abertura, Numero_Do_Banco, Saldo):
+        if Data_De_Abertura == "": raise ValueError("Informações invalidas")   
+        if Numero_Do_Banco == "": raise ValueError("Informações invalidas")
+        if Saldo < 0: raise ValueError("O valor não pode ser negativo ou nulo")
         NConta.inserir(Conta(0,id_Cliente, Data_De_Abertura, Numero_Do_Banco, Saldo))
     def Conta_Atualizar(id, id_Cliente, Data_De_Abertura, Numero_Do_Banco, Saldo):
+        if Data_De_Abertura == "": raise ValueError("Informações invalidas")    
+        if Numero_Do_Banco == "": raise ValueError("Informações invalidas")
+        if Saldo < 0: raise ValueError("O valor não pode ser negativo ou nulo")
         NConta.atualizar(Conta(id, id_Cliente, Data_De_Abertura, Numero_Do_Banco, Saldo))
     def Conta_Excluir(id):
-        NConta.excluir(Conta(id, 0, " ", " ", " "))
+        NConta.excluir(Conta(id, 0, " ", " ", 0))
     def listar_contas_do_cliente(id_clienteLogado):
         Contas_Do_Cliente = []
         for Conta in view.Conta_Listar():
@@ -64,11 +86,15 @@ class view:
     def Transferencia_Listar_Id(id):
         return NTransferencia.get_Transferencia(id)
     def Transferencia_Inserir(id_Cliente,id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia):
+        if Data_De_Transferencia == "": raise ValueError("Informações invalidas")
+        if Saldo_Da_Transferencia <= 0: raise ValueError("O valor não pode ser negativo ou nulo")
         return NTransferencia.inserir(Transferencia(0,id_Cliente,id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia))
     def Transferencia_Atualizar(id,id_Cliente,id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia):
+        if Data_De_Transferencia == "": raise ValueError("Informações invalidas")
+        if Saldo_Da_Transferencia <= 0: raise ValueError("O valor não pode ser negativo ou nulo")
         return NTransferencia.atualizar(Transferencia(id,id_Cliente, id_Conta1, id_Conta2, Data_De_Transferencia, Saldo_Da_Transferencia))
     def Transferencia_Excluir(id):
-        return NTransferencia.excluir(Transferencia(id,0,0,0," "," "))            
+        return NTransferencia.excluir(Transferencia(id,0,0,0," ",0))            
     def transferir(id_conta1, id_conta2, Transferencia):
         conta1 =  view.Conta_Listar_Id(id_conta1)
         conta2 =  view.Conta_Listar_Id(id_conta2)
