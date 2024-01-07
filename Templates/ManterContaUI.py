@@ -25,22 +25,26 @@ class ManterContaUI:
   def Inserir():
     clientes = view.Cliente_Listar()
     cliente = st.selectbox("Selecione o cliente", clientes)
-    Data_De_Abertura = st.text_input("Informe a data de abertura")
+    Data_De_Abertura = datetime.datetime.now()
     NumeroB = st.text_input("Informe o numero do banco")
+    
     Saldo = st.number_input("Informe o Saldo Inical")
     if st.button("Inserir"):
-        data = datetime.datetime.strptime(Data_De_Abertura, "%d/%m/%Y %H:%M")
-        view.Conta_Inserir(cliente.get_id(), data, NumeroB, Saldo)
-        st.success("Conta Inserida com sucesso")
+      try:
+        view.Conta_Inserir(cliente.get_id(), Data_De_Abertura, NumeroB, Saldo)
+        st.success("Conta inserida com sucesso")
         time.sleep(2)
         st.rerun()
+      except Exception as erro:
+        st.error(erro)
+        st.error("Informações invalidas")
   def Atualizar():
     contas = view.Conta_Listar()
     if len(contas) == 0:
       st.write("Nenhuma conta cadastrada")
     else:
       op = st.selectbox("Escolhar a Conta para atualizar", contas)
-      Data_De_Abertura = st.text_input("Informe a data de abertura", op.get_Data_De_Abertura().strftime("%d/%m/%Y %H:%M"))
+      Data_De_Abertura = st.text_input("Escolhar uma nova data")
       clientes = view.Cliente_Listar()
       cliente_atual = view.Cliente_Listar_Id((op.get_id_Cliente()))
       if cliente_atual is not None:
@@ -52,11 +56,12 @@ class ManterContaUI:
       if st.button("Atualizar"):
         try:
           data = datetime.datetime.strptime(Data_De_Abertura,"%d/%m/%Y %H:%M")
-          view.Conta_Atualizar(op.get_id(), cliente.get_id(), data, NumeroB, Saldo)
-          st.success("Conta Atualizada com sucesso")
+          view.Conta_Atualizar(op.get_id(),cliente.get_id(),data, NumeroB, Saldo)
+          st.success("Conta atualizada com sucesso")
           time.sleep(2)
           st.rerun()
-        except:
+        except Exception as erro:
+          st.error(erro)
           st.error("Informações invalidas")
   def Excluir():
     contas = view.Conta_Listar()
