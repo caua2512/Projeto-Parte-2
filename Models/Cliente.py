@@ -12,8 +12,12 @@ class Cliente:
         self.__cpf = cpf
         self.__Fone = Fone
         self.__Senha = Senha
-
-
+        if Nome == "": raise ValueError("Informações invalidas")
+        if Data_De_Nascimento == "": raise ValueError("Informações invalidas")
+        if Email == "": raise ValueError("Informações invalidas")
+        if cpf == "": raise ValueError("Informações invalidas")
+        if Fone == "": raise ValueError("Informações invalidas")
+        if Senha == "": raise ValueError("Informações invalidas")
 
     def set_id(self, id):
         self.__id = id
@@ -25,26 +29,32 @@ class Cliente:
         return self.__id_Banco
     def set_Nome(self, nome):
         self.__Nome = nome
+        if nome == "": raise ValueError("Informações invalidas")
     def get_Nome(self):
         return self.__Nome
     def set_Data_De_Nascimento(self, ddn):
         self.__Data_De_Nascimento = ddn
+        if ddn == "": raise ValueError("Informações invalidas")
     def get_Data_De_Nascimento(self):
         return self.__Data_De_Nascimento
     def set_Email(self, email):
         self.__Email = email
+        if email == "": raise ValueError("Informações invalidas")
     def get_Email(self):
         return self.__Email
     def set_CPF(self, cpf):
         self.__cpf = cpf
+        if cpf == "": raise ValueError("Informações invalidas")
     def get_CPF(self):
         return self.__cpf
     def set_Fone(self, Fone):
         self.__Fone = Fone
+        if Fone == "": raise ValueError("Informações invalidas")
     def get_Fone(self):
         return self.__Fone
     def set_Senha(self, senha):
         self.__Senha = senha
+        if senha == "": raise ValueError("Informações invalidas")
     def get_Senha(self):
         return self.__Senha
     
