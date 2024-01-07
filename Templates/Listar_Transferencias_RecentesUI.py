@@ -3,7 +3,7 @@ import pandas as pd
 from View import view
 class ListarTransferenciasUI:
   def main():
-    st.header("Controlar Bancos")
+    st.header("Listas Minhas Transferencias")
     ListarTransferenciasUI.Listar()
   def Listar():
     id_logado = st.session_state["cliente_id"]
