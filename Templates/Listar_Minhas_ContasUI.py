@@ -4,7 +4,7 @@ import pandas as pd
 
 class ListarContasUI:
   def main():
-    st.header("Controlar Bancos")
+    st.header("Listar Minhas Contas")
     ListarContasUI.Listar()
   def Listar():
     id_logado = st.session_state["cliente_id"]
