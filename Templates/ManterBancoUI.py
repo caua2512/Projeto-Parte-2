@@ -29,7 +29,8 @@ class ManterBancoUI:
         st.success("Banco inserido com sucesso")
         time.sleep(2)
         st.rerun()
-      except:
+      except Exception as erro:
+        st.error(erro)
         st.error("Informações invalidas")
   def Atualizar():
     bancos = view.Banco_Listar()
@@ -45,7 +46,8 @@ class ManterBancoUI:
           st.success("Banco atualizado com sucesso")
           time.sleep(2)
           st.rerun()
-        except:
+        except Exception as erro:
+          st.error(erro)
           st.error("Informações invalidas")
   def Excluir():
     bancos = view.Banco_Listar()
