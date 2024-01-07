@@ -12,7 +12,10 @@ class AbrirContaUI:
     NumeroDoBanco = st.text_input("Numero do Banco")
     Saldo = st.number_input("Informe o Saldo atual")
     if st.button("Abrir Conta"):
-      view.Conta_Inserir(id, DataDeAbertura, NumeroDoBanco, Saldo)
-      st.success("Banco atualizado com sucesso")
-      time.sleep(2)
-      st.rerun()
+      try:
+        view.Conta_Inserir(id, DataDeAbertura, NumeroDoBanco, Saldo)
+        st.success("Conta inserida com sucesso")
+        time.sleep(2)
+        st.rerun()
+      except:
+        st.error("Informações invalidadas")
