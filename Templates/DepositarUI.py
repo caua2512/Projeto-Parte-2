@@ -6,7 +6,8 @@ class DepositarUI:
     st.header("Depositar")
     DepositarUI.Depositar()
   def Depositar():
-    contas = view.Conta_Listar()
+    id_logado = st.session_state["cliente_id"]
+    contas = view.listar_contas_do_cliente(id_logado)
     conta = st.selectbox("seleciona Conta para depositar", contas)
     saldo = st.number_input("Saldo do saque")
     if st.button("Depositar"):
