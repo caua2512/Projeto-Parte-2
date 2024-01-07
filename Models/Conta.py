@@ -9,7 +9,10 @@ class Conta:
         self.__Data_De_Abertura = Data_De_Abertura
         self.__Numero_Do_Banco = Numero_Do_Banco
         self.__Saldo = Saldo
-    
+        if Data_De_Abertura == "": raise ValueError("Informações invalidas")    
+        if Numero_Do_Banco == "": raise ValueError("Informações invalidas")
+        if Saldo < 0: raise ValueError("O valor não pode ser negativo ou nulo")
+
     def set_id(self, id):
         self.__id = id
     def get_id(self):
@@ -24,10 +27,12 @@ class Conta:
         return self.__Data_De_Abertura
     def set_Numero_Do_Banco(self, ndb):
         self.__Numero_Do_Banco = ndb
+        if ndb == "": raise ValueError("Informações invalidas")
     def get_Numero_Do_Banco(self):
         return self.__Numero_Do_Banco
     def set_Saldo(self, saldo):
         self.__Saldo = saldo
+        if saldo < 0: raise ValueError("O valor não pode ser negativo ou nulo")
     def get_saldo(self):
         return self.__Saldo
     
