@@ -14,7 +14,7 @@ class AbrirContaUI:
     if st.button("Abrir Conta"):
       try:
         view.Conta_Inserir(id, DataDeAbertura, NumeroDoBanco, Saldo)
-        st.success("Conta inserida com sucesso")
+        st.success("Conta Aberta com sucesso")
         time.sleep(2)
         st.rerun()
       except:
