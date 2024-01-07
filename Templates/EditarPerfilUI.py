@@ -4,7 +4,7 @@ import datetime
 import time
 class EditarPerfilUI:
   def main():
-    st.header("Controlar Cliente")
+    st.header("Editar Perfil")
     EditarPerfilUI.Editar()
   def Editar():
     clientes = view.Cliente_Listar()
@@ -22,11 +22,14 @@ class EditarPerfilUI:
         fone = st.text_input("Informe o fone")
         senha = st.text_input("Informe a senha")
         if st.button("Editar"):
-          data = datetime.datetime.strptime(Data_de_nascimento, '%d/%m/%Y %H:%M')
-          view.Cliente_Editar_Perfil(id,banco.get_id(), Nome, data, email, cpf, fone, senha)
-          st.success("Cliente atualizado com sucesso")
-          time.sleep(2)
-          st.rerun()
+          try:
+            data = datetime.datetime.strptime(Data_de_nascimento, '%d/%m/%Y %H:%M')
+            view.Cliente_Editar_Perfil(id,banco.get_id(), Nome, data, email, cpf, fone, senha)
+            st.success("Perfil Atualizado")
+            time.sleep(2)
+            st.rerun()
+          except:
+            st.error("Informações invalidas")
       else:
         id = st.session_state["cliente_id"]
         bancos = view.Banco_Listar()
@@ -38,8 +41,11 @@ class EditarPerfilUI:
         fone = st.text_input("Informe o fone")
         senha = st.text_input("Informe a senha")
         if st.button("Editar"):
-          data = datetime.datetime.strptime(Data_de_nascimento, '%d/%m/%Y %H:%M')
-          view.Cliente_Editar_Perfil(id,banco.get_id(), nome, data, email, cpf, fone, senha)
-          st.success("Cliente atualizado com sucesso")
-          time.sleep(2)
-          st.rerun()
+          try:
+            data = datetime.datetime.strptime(Data_de_nascimento, '%d/%m/%Y %H:%M')
+            view.Cliente_Editar_Perfil(id,banco.get_id(), nome, data, email, cpf, fone, senha)
+            st.success("Perfil Atualizado")
+            time.sleep(2)
+            st.rerun()
+          except:
+            st.error("Informações invalidas")
